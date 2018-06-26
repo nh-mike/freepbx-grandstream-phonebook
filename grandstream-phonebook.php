@@ -41,20 +41,21 @@
 	function httpAuthenticate(){
 		header('WWW-Authenticate: Basic realm="My Realm"');
 		header('HTTP/1.0 401 Unauthorized');
-		echo '401 Unauthorized';
-		exit;
+		$print = false;
 	}
 	
-	if (!isset($_SERVER['PHP_AUTH_USER'])) {
-		httpAuthenticate();
-	} else {
-		$PHP_AUTH_USER = $mysqli->real_escape_string($mysqli, $_SERVER['PHP_AUTH_USER']);
-		$userPasswordLookupResult = DBQuery("select * from sip where id='$PHP_AUTH_USER' and keyword='secret'");
-		if (!$userPasswordLookupResult || !$userPasswordLookupResult[0]['data'] == $_SERVER['PHP_AUTH_PW']) {
+	if ( $print ) {
+		if (!isset($_SERVER['PHP_AUTH_USER'])) {
 			httpAuthenticate();
+		} else {
+			$PHP_AUTH_USER = $mysqli->real_escape_string($mysqli, $_SERVER['PHP_AUTH_USER']);
+			$userPasswordLookupResult = DBQuery("select * from sip where id='$PHP_AUTH_USER' and keyword='secret'");
+			if (!$userPasswordLookupResult || !$userPasswordLookupResult[0]['data'] == $_SERVER['PHP_AUTH_PW']) {
+				httpAuthenticate();
+			}
 		}
 	}
-	
+
 	header('Content-type: application/xml');
 	$xml_obj = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><AddressBook />');
 

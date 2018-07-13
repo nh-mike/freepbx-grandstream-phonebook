@@ -72,7 +72,7 @@
 			if ( $firstname ) {
 				$FirstName = $Contact->addChild('FirstName', htmlspecialchars($x['firstname']));
 			}
-			if ( $xlastname ) {
+			if ( $lastname ) {
 				$LastName = $Contact->addChild('LastName', htmlspecialchars($x['lastname']));
 			}
 			if ( $company ) {
